@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Braze Push Notifications</title>
+    <script src="https://js.appboycdn.com/web-sdk/3.5/appboy.min.js"></script>
+</head>
+<body>
+    <h1>Braze Push Notifications Test</h1>
+    <button onclick="registerPush()">Enable Push Notifications</button>
+    <a href="http://www.google.com">google</a>
+    <script>
+        // Braze SDKの初期化
+        appboy.initialize('40a4e84e-e57a-4dbc-a233-0da2fa59df9d', { // dashboardから必要な情報を取得し、書き換えてください。
+            baseUrl: 'sdk.iad-03.braze.com' // dashboardから必要な情報を取得し、書き換えてください。
+        });
+
+        appboy.openSession();
+
+        // ユーザーの識別
+        //appboy.changeUser('unique_user_id'); // ユーザーIDを一意の値に変更してください
+
+        function registerPush() {
+            try {
+                appboy.registerAppboyPushMessages();
+                console.log('Push notifications registered successfully.');
+            } catch (error) {
+                console.error('Error registering push notifications:', error);
+            }
+        }
+
+        // サービスワーカーの登録
+        // この部分のコードは、ブラウザがサービスワーカーをサポートしているか確認し、service-worker.jsを登録します。
+        // 登録が成功すると、サービスワーカーがバックグラウンドで動作し、プッシュ通知を受信する準備が整います。
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+            .then(function(registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            }).catch(function(error) {
+                console.log('Service Worker registration failed:', error);
+            });
+        }
+    </script>
+</body>
+</html>
